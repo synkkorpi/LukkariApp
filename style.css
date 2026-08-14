@@ -1,0 +1,267 @@
+:root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --card-hover: #252525;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent-blue: #2196f3;
+    --accent-green: #4caf50;
+    --accent-orange: #ff9800;
+    --border-color: #333;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 480px;
+}
+
+header {
+    margin-bottom: 15px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+h1 {
+    font-size: 1.4em;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+/* --- PWA Install Button & Offline Banner --- */
+.install-btn {
+    background: linear-gradient(135deg, var(--accent-blue), #1565c0);
+    color: #ffffff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(33, 150, 243, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+}
+
+.install-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(33, 150, 243, 0.4);
+}
+
+.offline-banner {
+    background-color: rgba(244, 67, 54, 0.15);
+    border: 1px solid #f44336;
+    color: #f44336;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- Henkilövalikko (Tabit) --- */
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+.tab-btn {
+    background-color: var(--card-bg);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background-color: var(--accent-blue);
+    color: white;
+    border-color: var(--accent-blue);
+}
+
+/* --- Viikkonavigaatio (Nuolet) --- */
+.week-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: var(--accent-blue);
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 5px 10px;
+}
+
+.nav-btn:hover {
+    opacity: 0.8;
+}
+
+.week-title {
+    font-size: 1em;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+/* --- Päiväpalkki (Viikon 7 päivää rinnakkain) --- */
+.day-bar-container {
+    margin-bottom: 20px;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* Asettaa kaikki 7 päivää vierekkäin */
+    gap: 4px;
+}
+
+.day-btn {
+    background-color: var(--card-bg);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    padding: 8px 2px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.75em;
+    transition: all 0.2s;
+}
+
+.day-btn .day-num {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-top: 2px;
+}
+
+.day-btn.active {
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: white;
+}
+
+.day-btn.active .day-num {
+    color: white;
+}
+
+/* --- Loman ilmoitusbanneri --- */
+.holiday-banner {
+    background-color: rgba(255, 152, 0, 0.15);
+    border: 1px solid var(--accent-orange);
+    color: var(--accent-orange);
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+/* --- Tapahtumakortit --- */
+#events-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.event-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    border-left: 5px solid var(--accent-blue);
+}
+
+.event-card.treenit { border-left-color: var(--accent-green); }
+.event-card.muu { border-left-color: var(--accent-orange); }
+.event-card.koulu { border-left-color: var(--accent-blue); }
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.event-time {
+    font-weight: bold;
+    font-size: 1.05em;
+    color: var(--text-primary);
+}
+
+/* Paikan tyyli kortin oikeassa laidassa */
+.event-location {
+    font-size: 0.85em;
+    color: var(--accent-orange);
+    background-color: rgba(255, 152, 0, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.event-subject {
+    font-size: 1.15em;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.event-meta {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+}
+
+.no-events {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 30px;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    border: 1px dashed var(--border-color);
+}
+
+.loading, .error {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+.error { color: #f44336; }

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perheen Viikko</title>
+
+    <!-- PWA Settings & Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#121212">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Perheen Viikko">
+
+    <!-- App Icons -->
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Offline-ilmoituspalkki -->
+        <div id="offline-banner" class="offline-banner hidden">
+            <span>⚡ Olet offline-tilassa. Näytetään välimuistissa olevat tiedot.</span>
+        </div>
+
+        <header>
+            <div class="header-content">
+                <h1>Perheen Viikko</h1>
+                <button id="pwa-install-btn" class="install-btn hidden" onclick="installPWA()">
+                    📲 Asenna sovellus
+                </button>
+            </div>
+        </header>
+
+        <!-- Henkilövalikko -->
+        <div id="tabs-container" class="tabs"></div>
+
+        <!-- Viikkonavigaatio (Nuolet ja viikon otsikko) -->
+        <div class="week-nav">
+            <button class="nav-btn" onclick="vaihdaViikkoa(-1)">❮ Edellinen</button>
+            <div id="week-title" class="week-title">Ladataan...</div>
+            <button class="nav-btn" onclick="vaihdaViikkoa(1)">Seuraava ❯</button>
+        </div>
+
+        <!-- Viikon päiväpalkki (ma-su) -->
+        <div class="day-bar-container">
+            <div id="days-container" class="days-grid"></div>
+        </div>
+
+        <!-- Loman ilmoitusalue -->
+        <div id="holiday-container"></div>
+
+        <!-- Tapahtumat -->
+        <div id="events-container">
+            <div class="loading">Ladataan kalenteria...</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
