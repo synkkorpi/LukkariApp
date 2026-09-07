@@ -265,3 +265,27 @@ h1 {
     color: var(--text-secondary);
 }
 .error { color: #f44336; }
+
+/* --- Ruokalistalaatikko --- */
+.lunch-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-left: 5px solid #e91e63; /* Vaaleanpunainen/erottuva reuna ruoalle */
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
+
+.lunch-title {
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.lunch-items {
+    color: var(--text-secondary);
+    line-height: 1.4;
+}

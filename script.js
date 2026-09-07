@@ -1,7 +1,10 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwtexVQWuAtTGr9qbgrwTmJK2lZCCkdrS7tqCG4mSggkxfyIEofiSHGYDT6QJZBW2-S/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxaP7FjsO5-bicauAPA25mIQ_4YCfHaFcPmo1eIZ3ucaQG2zlHlNlPuyvhc5q6dGpDF/exec";
+//  https://script.google.com/macros/s/AKfycbxaP7FjsO5-bicauAPA25mIQ_4YCfHaFcPmo1eIZ3ucaQG2zlHlNlPuyvhc5q6dGpDF/exec - v5
 
 let globalData = [];
 let exceptionsData = [];
+let lansiharjuData = []; // UUSI: Länsiharjun ruokalista
+let lykData = [];        // UUSI: LYK ruokalista
 let uniquePersons = [];
 let selectedPerson = "";
 let selectedDate = new Date(); // Nykyinen valittu päivä
@@ -62,6 +65,8 @@ function naytaOfflineBannari(show) {
 function kasitteleData(result) {
     globalData = result.data;
     exceptionsData = result.exceptions || [];
+    lansiharjuData = result.lansiharju || []; // UUSI: Tallennetaan ruokalista
+    lykData = result.lyk || [];               // UUSI: Tallennetaan ruokalista
 
     uniquePersons = [...new Set(globalData.map(item => item.Nimi).filter(Boolean))];
     
@@ -221,8 +226,53 @@ function tarkistaLoma(date, person) {
     return null;
 }
 
+// UUSI: Funktio kouluruoan näyttämiselle valittuna päivänä
+function renderLunch() {
+    const container = document.getElementById('lunch-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    let activeLunchData = [];
+    let koulunNimi = "";
+
+    // Tarkistetaan kuka on valittuna (muokkaa näitä nimistöjä tarvittaessa vastaamaan perheenjäsenten nimiä)
+    let pLower = selectedPerson.toLowerCase();
+    if (pLower.includes("nipa") || pLower.includes("länsiharju")) {
+        activeLunchData = lansiharjuData;
+        koulunNimi = "Länsiharjun koulu";
+    } else if (pLower.includes("leonardo") || pLower.includes("yhteiskoulu")) {
+        activeLunchData = lykData;
+        koulunNimi = "Lahden yhteiskoulu";
+    } else {
+        return; // Ei näytetä ruokaa muille kuin koululaisille
+    }
+
+    let selectedPvmStr = selectedDate.toISOString().split('T')[0];
+    let paivanRuoka = activeLunchData.find(item => String(item.Päivämäärä).split('T')[0] === selectedPvmStr);
+
+    if (paivanRuoka) {
+        container.innerHTML = `
+            <div class="lunch-card">
+                <div class="lunch-title">
+                    <span>🍲 Kouluruoka (${koulunNimi})</span>
+                    <span style="font-weight: normal; color: var(--accent-orange);">${paivanRuoka.Ateria || 'Lounas'}</span>
+                </div>
+                <div class="lunch-items">${paivanRuoka.Ruokalajit || 'Ei ruokalistatietoja.'}</div>
+            </div>
+        `;
+    } else {
+        container.innerHTML = `
+            <div class="lunch-card" style="border-left-color: var(--border-color);">
+                <div class="lunch-title"><span>🍲 Kouluruoka (${koulunNimi})</span></div>
+                <div class="lunch-items" style="font-style: italic;">Ei ruokalistaa tälle päivälle.</div>
+            </div>
+        `;
+    }
+}
+
 function paivitaNakyma() {
     renderDayBar();
+    renderLunch(); // UUSI: Kutsutaan ruokalistan piirtoa aina näkymän päivityksen yhteydessä
 
     const lomaSyyt = tarkistaLoma(selectedDate, selectedPerson);
     const holidayContainer = document.getElementById('holiday-container');
@@ -236,7 +286,7 @@ function paivitaNakyma() {
     const container = document.getElementById('events-container');
     container.innerHTML = '';
 
-let paivanTapahtumat = globalData.filter(item => {
+    let paivanTapahtumat = globalData.filter(item => {
         if (item.Nimi !== selectedPerson) return false;
 
         const parseDate = (d) => {
@@ -262,9 +312,6 @@ let paivanTapahtumat = globalData.filter(item => {
 
             // Ollaanko alkamispäivän jälkeen?
             if (selectedDate < alkuPvm) return false;
-
-            // DEBUG: Mitä vertaillaan?
-             console.log("Vertailu:", item.Aihe, "Alku:", alkuPvm.getDay(), "Valittu:", selectedDate.getDay());
 
             return alkuPvm.getDay() === selectedDate.getDay();
         }
@@ -292,7 +339,6 @@ let paivanTapahtumat = globalData.filter(item => {
             card.classList.add('muu');
         }
 
-        // Tarkistetaan onko paikkatetoa olemassa, jotta osataan näyttää se
         let paikkaHtml = rivi.Paikka ? `<span class="event-location">${rivi.Paikka}</span>` : '';
 
         card.innerHTML = `
